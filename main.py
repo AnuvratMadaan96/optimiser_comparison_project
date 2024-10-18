@@ -10,57 +10,32 @@ def plot_performance(results):
     # Convert list of results to DataFrame for easier plotting
     df = pd.DataFrame(results)
 
-    # Plot training accuracy
-    plt.figure(figsize=(10, 6))
-    for optimizer in df['optimizer'].unique():
-        subset = df[df['optimizer'] == optimizer]
-        subset['epoch_count'] = str(subset['fold'])+str(subset['epoch'])
-        plt.plot(subset['epoch_count'], subset['train_acc'], label=f'{optimizer} Train Accuracy')
+    grouped_df = df.groupby(['optimizer', 'epoch']).mean().reset_index()
+    print(grouped_df)
 
-    plt.title('Training Accuracy Comparison')
-    plt.xlabel('Epoch')
-    plt.ylabel('Accuracy (%)')
-    plt.legend()
-    plt.grid(True)
-    plt.show()
+    # Create subplots for train_loss, val_loss, train_acc, val_acc, and training_time
+    fig, axs = plt.subplots(5, 1, figsize=(15, 15))
 
-    # Plot validation accuracy
-    plt.figure(figsize=(10, 6))
-    for optimizer in df['optimizer'].unique():
-        subset = df[df['optimizer'] == optimizer]
-        plt.plot(subset['epoch'], subset['val_acc'], label=f'{optimizer} Validation Accuracy')
+    # Flatten the array of axes for easy indexing
+    axs = axs.flatten()
 
-    plt.title('Validation Accuracy Comparison')
-    plt.xlabel('Epoch')
-    plt.ylabel('Accuracy (%)')
-    plt.legend()
-    plt.grid(True)
-    plt.show()
+    # Metrics to plot
+    metrics = ['train_loss', 'val_loss', 'train_acc', 'val_acc', 'training_time']
+    titles = ['Train Loss', 'Validation Loss', 'Train Accuracy', 'Validation Accuracy', 'Training Time']
 
-    # Plot training loss
-    plt.figure(figsize=(10, 6))
-    for optimizer in df['optimizer'].unique():
-        subset = df[df['optimizer'] == optimizer]
-        plt.plot(subset['epoch'], subset['train_loss'], label=f'{optimizer} Train Loss')
+    # Iterate over each metric and plot the optimizer performances
+    for i, metric in enumerate(metrics):
+        for optimizer in grouped_df['optimizer'].unique():
+            optimizer_data = grouped_df[grouped_df['optimizer'] == optimizer]
+            axs[i].plot(optimizer_data['epoch'], optimizer_data[metric], label=optimizer)
 
-    plt.title('Training Loss Comparison')
-    plt.xlabel('Epoch')
-    plt.ylabel('Loss')
-    plt.legend()
-    plt.grid(True)
-    plt.show()
+        axs[i].set_title(titles[i])
+        axs[i].set_xlabel('Epoch')
+        axs[i].set_ylabel(metric.replace('_', ' ').capitalize())
+        axs[i].legend()
 
-    # Plot training time
-    plt.figure(figsize=(10, 6))
-    for optimizer in df['optimizer'].unique():
-        subset = df[df['optimizer'] == optimizer]
-        plt.plot(subset['epoch'], subset['training_time'], label=f'{optimizer} Train Time')
-
-    plt.title('Training Time Comparison')
-    plt.xlabel('Epoch')
-    plt.ylabel('Time')
-    plt.legend()
-    plt.grid(True)
+    # Adjust layout and show the plot
+    plt.tight_layout()
     plt.show()
 
 if __name__ == "__main__":
