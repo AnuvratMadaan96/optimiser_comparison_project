@@ -8,10 +8,13 @@ import os
 
 def plot_performance(results):
     # Convert list of results to DataFrame for easier plotting
-    df = pd.DataFrame(results)
+    if type(results) != type(pd.DataFrame()):
+        df = pd.DataFrame(results)
+        print("Converting to Dataframe")
+    else:
+        df = results
 
     grouped_df = df.groupby(['optimizer', 'epoch']).mean().reset_index()
-    print(grouped_df)
 
     # Create subplots for train_loss, val_loss, train_acc, val_acc, and training_time
     fig, axs = plt.subplots(5, 1, figsize=(15, 15))
