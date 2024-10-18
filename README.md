@@ -51,6 +51,7 @@ The results are evaluated based on:
 	•	Training accuracy
 	•	Validation accuracy
 	•	Training loss
+	•	Validation loss
 	•	Training time
 
 ### Features
@@ -75,7 +76,7 @@ To install the required dependencies, run:
 #### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/optimizer_comparison_project.git
+git clone https://github.com/AnuvratMadaan96/optimiser_comparison_project.git
 cd optimizer_comparison_project
 ```
 
@@ -99,11 +100,12 @@ After the script completes, performance graphs will be displayed comparing:
 	•	Training Accuracy over epochs for Adam, RMSprop, and AdamW.
 	•	Validation Accuracy over epochs.
 	•	Training Loss over epochs.
+	•	Validation Loss over epochs.
 
 You can also inspect the detailed results in results/results.csv.
 
 ### Hyperparameter Tuning
-You can perform hyperparameter tuning by modifying the utils/hyperparameter_search.py script and integrating it with Grid Search or Random Search from the sklearn library.
+*You can perform hyperparameter tuning by modifying the utils/hyperparameter_search.py script and integrating it with Grid Search or Random Search from the sklearn library.*
 
 For example, to perform Grid Search:
 
@@ -111,7 +113,7 @@ For example, to perform Grid Search:
 from sklearn.model_selection import GridSearchCV
 ```
 
-You can define parameter grids and integrate Grid Search or Random Search to find the best hyperparameters for each optimizer.
+*You can define parameter grids and integrate Grid Search or Random Search to find the best hyperparameters for each optimizer.*
 
 ### Results
 The results of this project will help you:

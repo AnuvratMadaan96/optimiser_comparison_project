@@ -26,7 +26,7 @@ def train(model, train_loader, optimizer, criterion, device):
     accuracy = 100. * correct / len(train_loader.dataset)
     training_time = time.time() - start_time
 
-    return avg_loss, accuracy, training_time
+    return avg_loss, accuracy, training_time, model
 
 def evaluate(model, test_loader, criterion, device):
     model.eval()
@@ -55,9 +55,10 @@ def k_fold_cross_validation(model_class, optimizer_name, dataset, k=5, epochs=10
     fold_size = length // k
     criterion = torch.nn.CrossEntropyLoss()
 
-    device = 'cuda:0' if torch.cuda.is_available() else 'mps' if torch.mps else 'cpu'
+    device = 'cuda:0' if torch.cuda.is_available() else 'mps' if torch.backends.mps.is_available() else 'cpu'
     for fold in range(k):
         model = model_class().to(device)
+        # model.apply(lambda m: initialize_weights(m, init_type))  # Apply weight initialization
         optimizer = get_optimizer(optimizer_name, model, lr)
         
         # Splitting dataset
@@ -72,9 +73,10 @@ def k_fold_cross_validation(model_class, optimizer_name, dataset, k=5, epochs=10
         val_loader = DataLoader(val_set, batch_size=64, shuffle=False)
 
         for epoch in range(epochs):
-            train_loss, train_acc, train_time = train(model, train_loader, optimizer, criterion, device)
+            train_loss, train_acc, train_time, trained_model = train(model, train_loader, optimizer, criterion, device)
             val_loss, val_acc = evaluate(model, val_loader, criterion, device)
 
             kfold_results.append({'fold': fold, 'epoch': epoch, 'train_loss': train_loss, 'train_acc': train_acc, 'val_loss': val_loss, 'val_acc': val_acc, 'training_time': train_time})
+        torch.save(trained_model.state_dict(), f'./optimiser_comparison_project/models/model_{optimizer_name}.pth')
 
     return kfold_results
