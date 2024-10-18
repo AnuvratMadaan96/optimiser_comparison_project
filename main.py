@@ -4,6 +4,7 @@ from data.kminst import get_kmnist_data
 from models.feedforward_nn import FeedForwardNN
 from optimisers.optimiser_comparison import get_optimizer
 from utils.train_eval import k_fold_cross_validation
+from utils.hyperparameter_search import perform_random_search, perform_grid_search
 import os
 
 def plot_performance(results):
@@ -44,9 +45,21 @@ def plot_performance(results):
 if __name__ == "__main__":
     # Load KMNIST dataset
     train_loader, test_loader = get_kmnist_data()
+    for images, labels in train_loader:
+        print(images.shape, labels.shape)  # Prints the shape of the batch of images and labels
+        break 
+    optimizers = ['RMSprop', 'Adam', 'AdamW']
+
+    grid_search_best_params = perform_grid_search()
+    print(f"Best parameters (Grid Search): {grid_search_best_params}")
+    
+    # Perform Random Search
+    random_search_best_params = perform_random_search()
+    print(f"Best parameters (Random Search): {random_search_best_params}")
+
+
 
     # Compare optimizers
-    optimizers = ['Adam', 'RMSprop', 'AdamW']
     results = []
 
     for optimizer_name in optimizers:
@@ -74,3 +87,7 @@ if __name__ == "__main__":
     plot_performance(results)
 
     print("Optimization comparison completed and performance graphs plotted!")
+    results = pd.read_csv("results/results.csv")
+    # Plot the performance
+    plot_performance(results)
+ 
