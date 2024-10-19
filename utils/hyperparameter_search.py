@@ -73,7 +73,7 @@ def perform_grid_search(train_loader=None, optimizers=None):
                 optimizer = optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-5)
 
             criterion = nn.CrossEntropyLoss()
-            loss = train_model(model, train_loader, optimizer, criterion, epochs=5, device=device)
+            loss = train_model(model, train_loader, optimizer, criterion, epochs=4, device=device)
 
             # Update best parameters if the current configuration performs better
             if loss < best_loss[optimizer_name]:
