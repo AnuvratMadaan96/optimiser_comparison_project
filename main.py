@@ -70,7 +70,7 @@ if __name__ == "__main__":
     for optimizer_name in optimizers:
         print(f"Running K-Fold CV for optimizer: {optimizer_name}")
         for search_name, parameters in best_parameters.items():
-            kfold_results = k_fold_cross_validation(FeedForwardNN, optimizer_name, train_loader, k=5, epochs=2, lr=parameters[optimizer_name]['learning_rate'])
+            kfold_results = k_fold_cross_validation(FeedForwardNN, optimizer_name, train_loader, k=5, epochs=15, lr=parameters[optimizer_name]['learning_rate'])
 
             # Add optimizer name to results for plotting
             for result in kfold_results:
