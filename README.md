@@ -105,15 +105,8 @@ After the script completes, performance graphs will be displayed comparing:
 You can also inspect the detailed results in results/results.csv.
 
 ### Hyperparameter Tuning
-*You can perform hyperparameter tuning by modifying the utils/hyperparameter_search.py script and integrating it with Grid Search or Random Search from the sklearn library.*
-
-For example, to perform Grid Search:
-
-```python
-from sklearn.model_selection import GridSearchCV
-```
-
-*You can define parameter grids and integrate Grid Search or Random Search to find the best hyperparameters for each optimizer.*
+This Project is just optimizing the learning rate for each optimizer.
+But other tuning parameters can also be added in this.
 
 ### Results
 The results of this project will help you:

@@ -93,7 +93,4 @@ if __name__ == "__main__":
     plot_performance(result_df)
 
     print("Optimization comparison completed and performance graphs plotted!")
-    # results = pd.read_csv("results/results.csv")
-    # # Plot the performance
-    # plot_performance(results)
  

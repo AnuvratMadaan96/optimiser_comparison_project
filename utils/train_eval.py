@@ -76,7 +76,9 @@ def k_fold_cross_validation(model_class, optimizer_name, dataset, k=5, epochs=10
             train_loss, train_acc, train_time, trained_model = train(model, train_loader, optimizer, criterion, device)
             val_loss, val_acc = evaluate(model, val_loader, criterion, device)
 
+            print(f'epochs:{epoch}  train_acc:{train_acc : 2.2f} train_loss:{train_loss : 2.2f} val_acc:{val_acc : 2.2f} val_loss:{val_loss : 2.2f}')
+
             kfold_results.append({'fold': fold, 'epoch': epoch, 'train_loss': train_loss, 'train_acc': train_acc, 'val_loss': val_loss, 'val_acc': val_acc, 'training_time': train_time})
-        torch.save(trained_model.state_dict(), f'./optimiser_comparison_project/models/model_{optimizer_name}.pth')
+        torch.save(trained_model.to('cpu'), f'./optimiser_comparison_project/models/model_{optimizer_name}.pth')
 
     return kfold_results
